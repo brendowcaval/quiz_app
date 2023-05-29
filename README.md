@@ -57,7 +57,7 @@ Telas:
 width="200" height="300">
 
 
-***link para o video mostrando o aplicativo:*** [Clique aqui](https://www.youtube.com/watch?v=vCPeSKyjA8c)
+***link para o video mostrando o aplicativo:*** [Clique aqui](https://www.youtube.com/watch?v=vCPeSKyjA8c) <br />
 ***as telas de login e cadastro foram implementadas com formik e validados pela Yup.***
  
 
