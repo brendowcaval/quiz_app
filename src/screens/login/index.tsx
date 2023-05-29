@@ -3,19 +3,22 @@ import { Formik } from "formik";
 import * as Yup from 'yup';
 import { useState } from "react";
 import { TextInput, View, Text, StyleSheet, ImageBackground, TouchableOpacity, SafeAreaView } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 
 
 
 
 
-export function Login() {
+export function Login(props: any) {
 
     const [resultado, setResultado] = useState("");
+    const nav = useNavigation<any>();
 
     const handleLogin = ({ email, senha }: any) => {
         if (email.trim() == 'teste@teste.com' && senha.trim() == '123456') {
             setResultado("logado");
+            nav.navigate('menu')
         } else {
             setResultado("falhou");
         }
@@ -23,7 +26,7 @@ export function Login() {
     }
     return (
 
-        <ImageBackground source={require('/faculdadeReactNative/criandoProjeto/meuapp/src/images/login.jpg')} style={styles.container} >
+        <ImageBackground source={{ uri: 'https://i.pinimg.com/736x/0b/31/35/0b3135aae94365f528b130d13b451f49.jpg' }} style={styles.container} >
             <Formik
                 initialValues={{ email: '', senha: '' }}
                 validationSchema={Yup.object({
@@ -55,9 +58,11 @@ export function Login() {
                         </TouchableOpacity>
                         {resultado == 'falhou' && <Text style={styles.erro}>Email ou Senha incorretas!</Text>}
 
-                        <TouchableOpacity style={styles.button2}>
+                        <TouchableOpacity style={styles.button2} onPress={() => nav.navigate('cadastro')}>
                             <Text style={{ fontFamily: 'monospace', color: 'white' }} >Cadastrar</Text>
                         </TouchableOpacity>
+
+
 
 
 

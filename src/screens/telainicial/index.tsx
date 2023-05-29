@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { TextInput, View, Text, StyleSheet, ImageBackground, TouchableOpacity } from "react-native";
+import { TextInput, View, Text, StyleSheet, ImageBackground, TouchableOpacity, FlatList } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -9,32 +10,34 @@ import { TextInput, View, Text, StyleSheet, ImageBackground, TouchableOpacity } 
 
 export function TelaInicial() {
 
+    const nav = useNavigation<any>();
 
-
+    let textoENavegacao: { texto: string, navegacao: string }[] = [
+        { texto: 'Quiz - Naruto', navegacao: 'quizNaruto' },
+        { texto: 'Quiz - Dragon Ball', navegacao: 'quizDB' },
+        { texto: 'Quiz - Saint Seiya', navegacao: 'quizSaint' }
+    ];
 
     return (
         <View style={styles.container}>
-
 
             <View style={styles.title}>
                 <Text style={styles.titleStyle}>AnimeQuiz</Text>
             </View>
 
-            <TouchableOpacity style={styles.button}>
-                <Text style={{ fontFamily: 'monospace', color: 'white' }}> Quiz sobre Naruto</Text>
+
+            <FlatList
+                data={textoENavegacao}
+                renderItem={({ item }) => (
+                    <TouchableOpacity style={styles.button} onPress={() => nav.navigate(item.navegacao)}>
+                        <Text style={{ fontFamily: 'monospace', color: 'white' }}>{item.texto}</Text>
+                    </TouchableOpacity>
+                )} />
+
+            <TouchableOpacity style={styles.buttonBack} onPress={() => nav.goBack()}>
+                <Text style={{ color: 'rgb(255,128,0)', fontSize: 15 }}>Sair</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text style={{ fontFamily: 'monospace', color: 'white' }}> Quiz sobre Dragon ball</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text style={{ fontFamily: 'monospace', color: 'white' }}> Quiz sobre Saint Seiya</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text style={{ fontFamily: 'monospace', color: 'white' }}> Fale Conosco</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-                <Text style={{ fontFamily: 'monospace', color: 'white' }}> Sair</Text>
-            </TouchableOpacity>
+
         </View>
     );
 }
@@ -44,11 +47,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 10,
-        backgroundColor: 'rgb(0,153,153)'
+        backgroundColor: 'rgb(192,192,192)'
     },
     title: {
         alignItems: 'center',
-        marginTop: 40
+        marginTop: 50,
+        marginBottom: 100
     },
     titleStyle: {
         fontFamily: 'monospace',
@@ -57,10 +61,17 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        backgroundColor: 'rgb(0,153,153)',
+        backgroundColor: 'rgb(255,128,0)',
         padding: 10,
         borderRadius: 10,
-        borderWidth: 1,
-        marginTop: 10,
+        borderWidth: 0,
+        marginTop: 20,
     },
+    buttonBack: {
+        alignItems: 'center',
+        padding: 10,
+        fontFamily: 'monospace',
+        marginBottom: 150
+
+    }
 });

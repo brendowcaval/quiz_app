@@ -1,25 +1,33 @@
 import { Button } from "@rneui/base";
 import { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image, ScrollView } from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NagevacaoType } from '../../navigations';
 
 
 
 
 
 
-export function QuizNaruto() {
-    // - quiz terá 6 perguntas
+export function QuizNaruto(props: any) {
+
+    const nav = useNavigation<NativeStackNavigationProp<NagevacaoType, 'quizNaruto'>>();
+
+
+    // - quiz terá 6 perguntas 
     // mensagem começa com a primeira pergunta do quiz
     const [mensagem, setMensagem] = useState("Kakashi era sensei do time...?");
-    const [pontos, setPontos] = useState(0);
+    const [pontuacao, setPontuacao] = useState(0);
     // respostas começa com as primeiras respostas do quiz
     const [resposta1, setResposta1] = useState("Time 7");
     const [resposta2, setResposta2] = useState("Time 9");
     const [resposta3, setResposta3] = useState("Time 6");
     const [resposta4, setResposta4] = useState("Time 8");
     const [aviso, setAviso] = useState("");
-    const [finalizado, setFinalizado] = useState(false);
+
     const [image, setImage] = useState('https://cdn.popsww.com/blog/sites/2/2021/11/hatake-kakashi.jpg');
+
 
 
 
@@ -93,22 +101,11 @@ export function QuizNaruto() {
         }, 3000);
     }
 
-    let mensagemFinal = () => {
+    let Finalizando = () => {
         setTimeout(() => {
-            setFinalizado(true);
-            setImage('https://www.shutterstock.com/shutterstock/videos/30650614/thumb/12.jpg?ip=x480');
-            setAviso('');
 
-            if (pontos >= 0 && pontos <= 3) {
-                setMensagem('Seus conhecimentos não são bons, você precisa melhorar!');
-            } else if (pontos >= 4) {
-                setMensagem('Seus conhecimentos são bons!');
-            }
 
-            setResposta1('Tentar Novamente');
-            setResposta2('Compartilhar');
-            setResposta3('Ir pro Menu');
-            setResposta4('Sair');
+            nav.navigate('resultado', { pontos: pontuacao, tela: 'quizNaruto' });
 
         }, 3000)
     }
@@ -120,82 +117,71 @@ export function QuizNaruto() {
         switch (mensagem) {
             case "Kakashi era sensei do time...?":
                 if (resposta == 1) {  // resposta correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta2();
 
                 } else if (resposta != 1) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta2();
                 }
                 break;
             case "Qual o sonho de Sasuke Uchiha no 'Naruto Clássico'?": // pergunta 2
                 if (resposta == 1) { // resposta correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta3();
                 } else if (resposta != 1) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta3();
                 }
                 break;
             case "Itachi era de qual clã?": // pergunta 3
                 if (resposta != 4) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta4();
                 } else if (resposta == 4) {
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta4();
                 }
                 break;
             case "Quem é o irmão do naruto?":
                 if (resposta != 3) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta5();
                 } else if (resposta == 3) {
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta5();
                 }
                 break;
             case "Quem deu o sharingan para o kakashi?":
                 if (resposta != 2) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta6();
                 } else if (resposta == 2) {
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta6();
                 }
                 break;
             case "Quantas caldas a raposa (bijuu)do naruto tem?":
                 if (resposta != 3) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
-                    mensagemFinal();
+                    Finalizando();
 
                 } else if (resposta == 3) {
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
-                    mensagemFinal();
+                    Finalizando();
 
-                }
-                break;
-            default:
-                if (resposta == 1) { // tentar novamente
-                    console.log("tentar denovo");
-                } else if (resposta == 2) { // compartilhar
-                    console.log("compartilhar");
-                } else if (resposta == 3) { // ir pro menu
-                    console.log("pro menu");
-                } else { // sair
-                    console.log("saindo");
                 }
                 break;
         }
@@ -209,8 +195,7 @@ export function QuizNaruto() {
             <ScrollView >
 
                 <View style={styles.mensagem}>
-                    {finalizado == true && <Text style={styles.pontos}>Score: {pontos}/6</Text>}
-                    <Text style={styles.texto}>{mensagem} {'\n'}</Text>
+                    <Text style={{ fontFamily: 'monospace', color: 'black' }}>{mensagem} {'\n'}</Text>
                 </View>
 
                 <Image style={styles.image} source={{ uri: image }} />
@@ -243,7 +228,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 10,
-        backgroundColor: 'rgb(0,153,153)'
+        backgroundColor: 'rgb(192,192,192)'
     },
     mensagem: {
         marginTop: 80,
@@ -260,10 +245,10 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        backgroundColor: 'rgb(0,153,153)',
+        backgroundColor: 'rgb(255,128,0)',
         padding: 10,
         borderRadius: 10,
-        borderWidth: 1,
+        borderWidth: 0,
         marginTop: 10,
     },
     msgAcertou: {
@@ -280,13 +265,6 @@ const styles = StyleSheet.create({
         width: 300,
         height: 200,
         marginLeft: 15
-    },
-    botaoFinalizar: {
-        backgroundColor: 'rgb(0,153,153)',
-        borderRadius: 10,
-        borderWidth: 1,
-        padding: 5
-
     },
 
 })

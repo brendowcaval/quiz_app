@@ -3,6 +3,8 @@ import { Formik } from "formik";
 import * as Yup from 'yup';
 import { Button } from "@rneui/base";
 import { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+
 
 
 
@@ -17,6 +19,7 @@ export function Cadastro() {
 
 
     const [cadastro, setCadastro] = useState("");
+    const nav = useNavigation<any>();
 
     const handleCadastro = ({ nome, email, senha }: any) => {
         if (nome.trim() == 'usuario' && email.trimp() == 'email@exemplo.com' && senha.trim() == '0123456789') {
@@ -28,7 +31,7 @@ export function Cadastro() {
 
     return (
         <ImageBackground
-            source={require('/faculdadeReactNative/criandoProjeto/meuapp/src/images/cadastro.jpg')}
+            source={{ uri: 'https://i.pinimg.com/originals/30/f9/00/30f900fd7fec80bb029ea4e984319e80.jpg' }}
             style={styles.container}>
 
             <Formik initialValues={{ nome: '', email: '', senha: '' }}
@@ -42,6 +45,10 @@ export function Cadastro() {
                 {({ handleChange, handleSubmit, errors, touched, handleBlur }) => (
 
                     <View>
+
+                        <TouchableOpacity>
+
+                        </TouchableOpacity>
 
                         <Text style={styles.title}>Cadastro</Text>
 
@@ -68,6 +75,9 @@ export function Cadastro() {
 
                         <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
                             <Text>Cadastrar</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => nav.navigate('login')}>
+                            <Text>Voltar</Text>
                         </TouchableOpacity>
 
                         {cadastro == 'sucesso' && <Text style={styles.sucess}>sua conta foi cadastrada</Text>}

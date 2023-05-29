@@ -1,5 +1,8 @@
 import { View, StyleSheet, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import { useState } from "react";
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NagevacaoType } from '../../navigations';
 
 
 
@@ -9,6 +12,10 @@ import { useState } from "react";
 
 
 export function QuizSeiya() {
+
+
+    const nav = useNavigation<NativeStackNavigationProp<NagevacaoType, 'quizSaint'>>();
+
     // quiz com 6 perguntas também
 
     // mensagem guardando 1 pergunta
@@ -19,9 +26,9 @@ export function QuizSeiya() {
     const [resposta3, setResposta3] = useState("12");
     const [resposta4, setResposta4] = useState("13"); //correta
 
-    const [pontos, setPontos] = useState(0);
+    const [pontuacao, setPontuacao] = useState(0);
     const [aviso, setAviso] = useState("");
-    const [finalizado, setFinalizado] = useState(false);
+
     // guardando primeira imagem do quiz
     const [image, setImage] = useState('https://2.bp.blogspot.com/-mUc1mUa5rMw/VAFLIypLOsI/AAAAAAAACI4/BvaG5jVDvfo/s1600/cdz%2B-%2B%2B12%2Bcavaleiros%2Bde%2Bouro.jpg');
 
@@ -96,22 +103,10 @@ export function QuizSeiya() {
         }, 3000);
     }
 
-    let mensagemFinal = () => {
+    let Finalizando = () => {
         setTimeout(() => {
-            setFinalizado(true);
-            setImage('https://www.shutterstock.com/shutterstock/videos/30650614/thumb/12.jpg?ip=x480');
-            setAviso('');
 
-            if (pontos >= 0 && pontos <= 3) {
-                setMensagem('Seus conhecimentos não são bons, você precisa melhorar!');
-            } else if (pontos >= 4) {
-                setMensagem('Seus conhecimentos são bons!');
-            }
-
-            setResposta1('Tentar Novamente');
-            setResposta2('Compartilhar');
-            setResposta3('Ir pro Menu');
-            setResposta4('Sair');
+            nav.navigate('resultado', { pontos: pontuacao, tela: 'quizSaint' });
 
         }, 3000)
     }
@@ -121,85 +116,74 @@ export function QuizSeiya() {
         switch (mensagem) {
             case "Quantos cavaleiros de ouro existem?":
                 if (resposta != 4) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta2();
 
                 } else if (resposta == 4) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta2();
                 }
                 break;
             case "O que acontece quando Seiya é atingido pela espada de Hades?":
                 if (resposta != 4) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta3();
 
                 } else if (resposta == 4) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta3();
                 }
                 break;
             case "Qual o ataque mais poderoso de Shiryu?":
                 if (resposta != 4) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta4();
 
                 } else if (resposta == 4) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta4();
                 }
                 break;
             case "Qual cavaleiro usou a armadura de virgem lutando contra Thanatos?":
                 if (resposta != 2) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta5();
 
                 } else if (resposta == 2) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta5();
                 }
                 break;
             case "Qual é o local de nascimento de Hyoga de Cisne?":
                 if (resposta != 3) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta6();
 
                 } else if (resposta == 3) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta6();;
                 }
                 break;
             case "O que marin é do Seiya?":
                 if (resposta != 2) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
-                    mensagemFinal();
+                    Finalizando();
 
                 } else if (resposta == 2) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
-                    mensagemFinal();
-                }
-                break;
-            default:
-                if (resposta == 1) { // tentar novamente
-                    console.log("tentar denovo");
-                } else if (resposta == 2) { // compartilhar
-                    console.log("compartilhar");
-                } else if (resposta == 3) { // ir pro menu
-                    console.log("pro menu");
-                } else { // sair
-                    console.log("saindo");
+                    Finalizando();
                 }
                 break;
         }
@@ -213,8 +197,7 @@ export function QuizSeiya() {
             <ScrollView >
 
                 <View style={styles.mensagem}>
-                    {finalizado == true && <Text style={styles.pontos}>Score: {pontos}/6</Text>}
-                    <Text style={styles.texto}>{mensagem} {'\n'}</Text>
+                    <Text style={{ fontFamily: 'monospace', color: 'black' }}>{mensagem} {'\n'}</Text>
                 </View>
 
                 <Image style={styles.image} source={{ uri: image }} />
@@ -249,7 +232,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 10,
-        backgroundColor: 'rgb(0,153,153)'
+        backgroundColor: 'rgb(192,192,192)'
     },
     mensagem: {
         marginTop: 80,
@@ -266,10 +249,10 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        backgroundColor: 'rgb(0,153,153)',
+        backgroundColor: 'rgb(255,128,0)',
         padding: 10,
         borderRadius: 10,
-        borderWidth: 1,
+        borderWidth: 0,
         marginTop: 10,
     },
     msgAcertou: {
@@ -286,13 +269,6 @@ const styles = StyleSheet.create({
         width: 300,
         height: 200,
         marginLeft: 15
-    },
-    botaoFinalizar: {
-        backgroundColor: 'rgb(0,153,153)',
-        borderRadius: 10,
-        borderWidth: 1,
-        padding: 5
-
     },
 
 })

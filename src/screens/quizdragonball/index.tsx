@@ -1,5 +1,9 @@
 import { View, StyleSheet, Text, TouchableOpacity, Image, ScrollView } from "react-native";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { NagevacaoType } from '../../navigations';
+import React from "react";
 
 
 
@@ -9,7 +13,15 @@ import { useState } from "react";
 
 
 
-export function QuizDragonBall() {
+export function QuizDragonBall(props: any) {
+
+
+
+
+
+
+
+    const nav = useNavigation<NativeStackNavigationProp<NagevacaoType, 'quizDB'>>();
 
     // quiz com 6 perguntas também
 
@@ -21,9 +33,9 @@ export function QuizDragonBall() {
     const [resposta3, setResposta3] = useState("Morte de goten");
     const [resposta4, setResposta4] = useState("Morte de gohan");
 
-    const [pontos, setPontos] = useState(0);
+    const [pontuacao, setPontuacao] = useState(0);
     const [aviso, setAviso] = useState("");
-    const [finalizado, setFinalizado] = useState(false);
+
     // guardando primeira imagem do quiz
     const [image, setImage] = useState('https://www.latercera.com/resizer/vZ5_qPHMpfImqPJJSfPHdrfXDHU=/800x0/smart/arc-anglerfish-arc2-prod-copesa.s3.amazonaws.com/public/J7UEIVG7TZDGTAA3XGHL3T6AXQ.jpg');
 
@@ -97,22 +109,12 @@ export function QuizDragonBall() {
         }, 3000);
     }
 
-    let mensagemFinal = () => {
+    let Finalizando = () => {
         setTimeout(() => {
-            setFinalizado(true);
-            setImage('https://www.shutterstock.com/shutterstock/videos/30650614/thumb/12.jpg?ip=x480');
-            setAviso('');
 
-            if (pontos >= 0 && pontos <= 3) {
-                setMensagem('Seus conhecimentos não são bons, você precisa melhorar!');
-            } else if (pontos >= 4) {
-                setMensagem('Seus conhecimentos são bons!');
-            }
+            nav.navigate('resultado', { pontos: pontuacao, tela: 'quizDB' });
 
-            setResposta1('Tentar Novamente');
-            setResposta2('Compartilhar');
-            setResposta3('Ir pro Menu');
-            setResposta4('Sair');
+
 
         }, 3000)
     }
@@ -124,87 +126,76 @@ export function QuizDragonBall() {
         switch (mensagem) {
             case "Qual foi o motivo de Goku se transformar em ssj?":
                 if (resposta != 2) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta2();
 
                 } else if (resposta == 2) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta2();
                 }
                 break;
             case "Quais foram os vilões que mataram Goku?":
                 if (resposta != 3) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta3();
 
                 } else if (resposta == 3) { //correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta3();
                 }
                 break;
             case "Quem é o principe dos saiyajins?":
                 if (resposta != 2) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta4();
 
                 } else if (resposta == 2) { //correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta4();
                 }
                 break;
             case "Quem foi o primeiro a se transforma em ssj2?":
                 if (resposta != 3) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta5();
 
                 } else if (resposta == 3) { // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta5();
                 }
                 break;
             case "Qual a idade de Trunks e Goten em Dragon Ball Z?":
                 if (resposta != 4) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
                     mudandoPergunta6();
 
                 } else if (resposta == 4) {  // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
                     mudandoPergunta6();
                 }
                 break;
             case "Como Goku aprendeu o teletransporte?":
                 if (resposta != 4) {
-                    setPontos(pontos);
+                    setPontuacao(pontuacao);
                     setAviso("Você errou!");
-                    mensagemFinal();
+                    Finalizando();
 
                 } else if (resposta == 4) {  // correta
-                    setPontos(pontos + 1);
+                    setPontuacao(pontuacao + 1);
                     setAviso("Você acertou!");
-                    mensagemFinal();
+                    Finalizando();
 
 
-                }
-                break;
-            default:
-                if (resposta == 1) { // tentar novamente
-                    console.log("tentar denovo");
-                } else if (resposta == 2) { // compartilhar
-                    console.log("compartilhar");
-                } else if (resposta == 3) { // ir pro menu
-                    console.log("pro menu");
-                } else { // sair
-                    console.log("saindo");
                 }
                 break;
 
@@ -213,14 +204,17 @@ export function QuizDragonBall() {
 
 
 
+
+
+
+
     return (
         <View style={styles.container}>
 
-            <ScrollView >
+            <ScrollView>
 
                 <View style={styles.mensagem}>
-                    {finalizado == true && <Text style={styles.pontos}>Score: {pontos}/6</Text>}
-                    <Text style={styles.texto}>{mensagem} {'\n'}</Text>
+                    <Text style={{ fontFamily: 'monospace', color: 'black' }}>{mensagem} {'\n'}</Text>
                 </View>
 
                 <Image style={styles.image} source={{ uri: image }} />
@@ -255,7 +249,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 10,
-        backgroundColor: 'rgb(0,153,153)'
+        backgroundColor: 'rgb(192,192,192)'
     },
     mensagem: {
         marginTop: 80,
@@ -272,10 +266,10 @@ const styles = StyleSheet.create({
     },
     button: {
         alignItems: 'center',
-        backgroundColor: 'rgb(0,153,153)',
+        backgroundColor: 'rgb(255,128,0)',
         padding: 10,
         borderRadius: 10,
-        borderWidth: 1,
+        borderWidth: 0,
         marginTop: 10,
     },
     msgAcertou: {
@@ -293,12 +287,7 @@ const styles = StyleSheet.create({
         height: 200,
         marginLeft: 15
     },
-    botaoFinalizar: {
-        backgroundColor: 'rgb(0,153,153)',
-        borderRadius: 10,
-        borderWidth: 1,
-        padding: 5
-
-    },
 
 })
+
+

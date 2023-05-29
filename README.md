@@ -8,6 +8,10 @@ que gosto para compor!)
 
 - ***Utilizando React Native com expo***
 
+ao todo são 7 telas do aplicativo, para logar, cadastrar, menu, as 3 telas dos quiz e uma
+tela que mostra o resultado do quiz, com os pontos que o usuário obteve e algumas opções
+como tentar novamente, e compartilhamento(aqui usei o recurso nativo de compartilhamento)
+
 
 
 Telas: 
@@ -30,9 +34,8 @@ Telas:
 
 - tela do Quiz(Anime Dragon ball):
 <div style={{flex-direction:row}}>
-<img src="https://github.com/brendowcaval/quiz_app/blob/main/src/images/telas/dbz1.jpg"  width="200" height="300">
-<img src="https://github.com/brendowcaval/quiz_app/blob/main/src/images/telas/dbz2.jpg"  width="200" height="300">
-<img src="https://github.com/brendowcaval/quiz_app/blob/main/src/images/telas/score.jpg"  width="200" height="300">
+<img src="https://github.com/brendowcaval/quiz_app/blob/main/src/images/telas/db1.jpg"  width="200" height="300">
+<img src="https://github.com/brendowcaval/quiz_app/blob/main/src/images/telas/db2.jpg"  width="200" height="300">
   </div>
  
  
@@ -48,9 +51,14 @@ Telas:
 <img src="https://github.com/brendowcaval/quiz_app/blob/main/src/images/telas/saint2.jpg"  width="200" height="300">
   </div>
 
+- tela do Resultado:
+
+<img src="https://github.com/brendowcaval/quiz_app/blob/main/src/images/telas/resultado.jpg"
+width="200" height="300">
 
 
-- ***as telas de login e cadastro foram implementadas com formik e validados pela Yup.***
+***link para o video mostrando o aplicativo:*** [Clique aqui](https://www.youtube.com/watch?v=vCPeSKyjA8c)
+***as telas de login e cadastro foram implementadas com formik e validados pela Yup.***
  
 
 
