@@ -14,7 +14,7 @@ como tentar novamente, e compartilhamento(aqui usei o recurso nativo de comparti
 E a tela de histórico de pontos, onde todas as pontuações do usuário são guardadas.
 
 
-***Foi configurado com o  Firebase(BaaS) ***
+***Foi configurado com o  Firebase(BaaS)***
 
 
 
@@ -63,7 +63,7 @@ width="200" height="300">
 
 ***link para o video mostrando o aplicativo(com o recurso nativo):*** [Clique aqui](https://www.youtube.com/watch?v=vCPeSKyjA8c) <br />
 ***link para o video mostrando a versão final(foi incluida mais uma tela para histórico de pontos):***
-[Clique aqui](https://www.youtube.com/watch?v=ABcT-2i01Rs)
+[Clique aqui](https://www.youtube.com/watch?v=ABcT-2i01Rs) <br />
 ***as telas de login e cadastro foram implementadas com formik e validados pela Yup.***
  
 
