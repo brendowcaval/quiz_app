@@ -7,20 +7,33 @@ import { QuizDragonBall } from '../screens/quizdragonball';
 import { QuizNaruto } from '../screens/quiznaruto';
 import { QuizSeiya } from '../screens/quizseiya';
 import { Resultado } from '../screens/resultado';
+import { Historico } from '../screens/historico';
 
 
 
 export type NagevacaoType = {
     login: undefined,
     cadastro: undefined,
-    menu: undefined,
-    quizDB: undefined,
-    quizNaruto: undefined,
-    quizSaint: undefined,
+    menu: {
+        email: string
+    },
+    quizDB: {
+        email: string
+    },
+    quizNaruto: {
+        email: string
+    },
+    quizSaint: {
+        email: string
+    },
     resultado: {
+        email: string,
         pontos: number,
         tela: string
     },
+    historico: {
+        email: string
+    }
 }
 
 const Stack = createNativeStackNavigator<NagevacaoType>();
@@ -36,6 +49,7 @@ export function NavegacaoPrincipal() {
                 <Stack.Screen name='quizNaruto' component={QuizNaruto} />
                 <Stack.Screen name='quizSaint' component={QuizSeiya} />
                 <Stack.Screen name='resultado' component={Resultado} />
+                <Stack.Screen name='historico' component={Historico} />
             </Stack.Navigator>
         </NavigationContainer>
     )

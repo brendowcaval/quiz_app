@@ -8,14 +8,17 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-export function TelaInicial() {
+
+export function TelaInicial(props: any) {
 
     const nav = useNavigation<any>();
+
 
     let textoENavegacao: { texto: string, navegacao: string }[] = [
         { texto: 'Quiz - Naruto', navegacao: 'quizNaruto' },
         { texto: 'Quiz - Dragon Ball', navegacao: 'quizDB' },
-        { texto: 'Quiz - Saint Seiya', navegacao: 'quizSaint' }
+        { texto: 'Quiz - Saint Seiya', navegacao: 'quizSaint' },
+        { texto: 'Histórico de Pontos', navegacao: 'historico' }
     ];
 
     return (
@@ -26,10 +29,12 @@ export function TelaInicial() {
             </View>
 
 
+
+
             <FlatList
                 data={textoENavegacao}
                 renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.button} onPress={() => nav.navigate(item.navegacao)}>
+                    <TouchableOpacity style={styles.button} onPress={() => nav.navigate(item.navegacao, { email: props.route.params.email })}>
                         <Text style={{ fontFamily: 'monospace', color: 'white' }}>{item.texto}</Text>
                     </TouchableOpacity>
                 )} />
@@ -66,12 +71,13 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 0,
         marginTop: 20,
+
     },
     buttonBack: {
         alignItems: 'center',
         padding: 10,
         fontFamily: 'monospace',
-        marginBottom: 150
+        marginBottom: 100
 
     }
 });

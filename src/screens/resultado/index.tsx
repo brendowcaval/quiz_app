@@ -51,7 +51,7 @@ export function Resultado(props: any) {
 
 
 
-            <TouchableOpacity style={styles.button} onPress={() => props.navigation.replace(props.route.params.tela)}>
+            <TouchableOpacity style={styles.button} onPress={() => props.navigation.replace(props.route.params.tela, { email: props.route.params.email })}>
                 <Text style={styles.textos}>Tentar novamente</Text>
             </TouchableOpacity>
 
@@ -63,7 +63,7 @@ export function Resultado(props: any) {
                 <Text style={styles.textos}>Compartilhar minha pontuação</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button} onPress={() => nav.navigate('menu')}>
+            <TouchableOpacity style={styles.button} onPress={() => nav.navigate('menu', { email: props.route.params.email })}>
                 <Text style={styles.textos}>Ir para o menu</Text>
             </TouchableOpacity>
 

@@ -4,6 +4,7 @@ import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NagevacaoType } from '../../navigations';
 import React from "react";
+import { getFirestore, doc, setDoc, updateDoc, addDoc, collection, Timestamp } from 'firebase/firestore';
 
 
 
@@ -22,6 +23,7 @@ export function QuizDragonBall(props: any) {
 
 
     const nav = useNavigation<NativeStackNavigationProp<NagevacaoType, 'quizDB'>>();
+    const db = getFirestore();
 
     // quiz com 6 perguntas também
 
@@ -112,7 +114,17 @@ export function QuizDragonBall(props: any) {
     let Finalizando = () => {
         setTimeout(() => {
 
-            nav.navigate('resultado', { pontos: pontuacao, tela: 'quizDB' });
+            //const documento = doc(db, 'pontos_quiz', '1');
+            //const dados = { pontos: pontuacao, quiz: 'dragon ball' };
+            //setDoc(documento, dados);
+
+            addDoc(collection(db, props.route.params.email), {
+                pontos: pontuacao,
+                quiz: 'dragon ball',
+                data: new Date().toDateString()
+            })
+
+            nav.navigate('resultado', { email: props.route.params.email, pontos: pontuacao, tela: 'quizDB' });
 
 
 
@@ -212,6 +224,8 @@ export function QuizDragonBall(props: any) {
         <View style={styles.container}>
 
             <ScrollView>
+
+
 
                 <View style={styles.mensagem}>
                     <Text style={{ fontFamily: 'monospace', color: 'black' }}>{mensagem} {'\n'}</Text>

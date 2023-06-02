@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { Button } from "@rneui/base";
 import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 
 
 
@@ -17,15 +18,34 @@ import { useNavigation } from '@react-navigation/native';
 
 export function Cadastro() {
 
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [erro, setErro] = useState<null | string>(null);
+    const [sucesso, setSucesso] = useState<null | string>(null);
 
-    const [cadastro, setCadastro] = useState("");
     const nav = useNavigation<any>();
 
-    const handleCadastro = ({ nome, email, senha }: any) => {
-        if (nome.trim() == 'usuario' && email.trimp() == 'email@exemplo.com' && senha.trim() == '0123456789') {
-            setCadastro("sucesso");
-        } else {
-            setCadastro("erro");
+    const auth = getAuth();
+
+
+
+
+    const handleCadastro = async () => {
+        setSucesso(null);
+        setErro(null);
+
+
+        try {
+            await createUserWithEmailAndPassword(auth, email, senha);
+            setSucesso('Conta criada com sucesso!');
+        } catch (erro) {
+            console.log(erro);
+            if (erro.code == 'auth/email-already-in-use') {
+                setErro('Esse email já está em uso!');
+            } else {
+                setErro('Houve um erro, conta não criada!');
+            }
+
         }
     }
 
@@ -37,8 +57,8 @@ export function Cadastro() {
             <Formik initialValues={{ nome: '', email: '', senha: '' }}
                 validationSchema={Yup.object({
                     nome: Yup.string().required('informe o nome'),
-                    email: Yup.string().required('informe o email').email("Esse email não é válido!"),
-                    senha: Yup.string().required('informe a senha').max(10, "A senha não pode ultrapassar 10 caracteres")
+                    email: Yup.string().email("Esse email não é válido!"),
+                    senha: Yup.string().max(10, "A senha não pode ultrapassar 10 caracteres")
                 })}
                 onSubmit={handleCadastro}>
 
@@ -61,18 +81,19 @@ export function Cadastro() {
                             {touched.nome && errors.nome && <Text style={styles.erro}>{errors.nome}</Text>}
 
 
-                            <TextInput placeholder="Digite um email" onChangeText={handleChange('email')} style={styles.input} />
+                            <TextInput placeholder="Digite um email" onChangeText={setEmail} style={styles.input} />
                             {errors.email && touched.email && <Text style={styles.erro}>{errors.email}</Text>}
 
 
-                            <TextInput placeholder="Digite uma senha" onChangeText={handleChange('senha')}
+                            <TextInput placeholder="Digite uma senha" onChangeText={setSenha}
                                 style={styles.input}
                                 secureTextEntry />
                             {errors.senha && touched.senha && <Text style={styles.erro}>{errors.senha}</Text>}
 
                         </SafeAreaView>
 
-
+                        {sucesso != null && <Text style={styles.sucess}> {sucesso}</Text>}
+                        {erro != null && <Text style={styles.erro}>{erro}</Text>}
                         <TouchableOpacity style={styles.button} onPress={() => handleSubmit()}>
                             <Text>Cadastrar</Text>
                         </TouchableOpacity>
@@ -80,8 +101,9 @@ export function Cadastro() {
                             <Text>Voltar</Text>
                         </TouchableOpacity>
 
-                        {cadastro == 'sucesso' && <Text style={styles.sucess}>sua conta foi cadastrada</Text>}
-                        {cadastro == 'erro' && <Text style={styles.notsucess}>houve um erro no cadastro</Text>}
+
+
+
 
                     </View>
 
@@ -140,3 +162,7 @@ const styles = StyleSheet.create({
         marginLeft: 20
     }
 });
+
+function then(arg0: (userCredential: any) => void) {
+    throw new Error("Function not implemented.");
+}

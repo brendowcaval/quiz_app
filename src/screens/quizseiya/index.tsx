@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NagevacaoType } from '../../navigations';
+import { getFirestore, doc, setDoc, updateDoc, addDoc, collection } from 'firebase/firestore';
 
 
 
@@ -11,10 +12,11 @@ import { NagevacaoType } from '../../navigations';
 
 
 
-export function QuizSeiya() {
+export function QuizSeiya(props: any) {
 
 
     const nav = useNavigation<NativeStackNavigationProp<NagevacaoType, 'quizSaint'>>();
+    const db = getFirestore();
 
     // quiz com 6 perguntas também
 
@@ -106,7 +108,13 @@ export function QuizSeiya() {
     let Finalizando = () => {
         setTimeout(() => {
 
-            nav.navigate('resultado', { pontos: pontuacao, tela: 'quizSaint' });
+            addDoc(collection(db, props.route.params.email), {
+                pontos: pontuacao,
+                quiz: 'saint seiya',
+                data: new Date().toDateString()
+            })
+
+            nav.navigate('resultado', { email: props.route.params.email, pontos: pontuacao, tela: 'quizSaint' });
 
         }, 3000)
     }

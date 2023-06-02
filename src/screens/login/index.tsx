@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { useState } from "react";
 import { TextInput, View, Text, StyleSheet, ImageBackground, TouchableOpacity, SafeAreaView } from "react-native";
 import { useNavigation } from '@react-navigation/native';
+import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 
 
 
@@ -15,13 +16,30 @@ export function Login(props: any) {
     const [resultado, setResultado] = useState("");
     const nav = useNavigation<any>();
 
-    const handleLogin = ({ email, senha }: any) => {
-        if (email.trim() == 'teste@teste.com' && senha.trim() == '123456') {
-            setResultado("logado");
-            nav.navigate('menu')
-        } else {
-            setResultado("falhou");
-        }
+    const auth = getAuth();
+    const [email, setEmail] = useState('');
+    const [senha, setSenha] = useState('');
+    const [erro, setErro] = useState<null | string>(null);
+
+
+
+    const handleLogin = async () => {
+
+        setErro(null);
+
+        signInWithEmailAndPassword(auth, email, senha)
+            .then(usuario => {
+
+
+                setTimeout(() => {
+                    nav.navigate('menu', { email: usuario.user.email });
+                }, 3000);
+            })
+            .catch((erro: any) => {
+                console.log(erro);
+                setErro('Email ou senha incorretas!');
+            })
+
 
     }
     return (
@@ -30,8 +48,8 @@ export function Login(props: any) {
             <Formik
                 initialValues={{ email: '', senha: '' }}
                 validationSchema={Yup.object({
-                    email: Yup.string().required('Informe o email').email('Email não válido'),
-                    senha: Yup.string().required('Informe a senha').max(10, 'Limite da senha é 10 caracteres')
+                    email: Yup.string().email('Email não válido'),
+                    senha: Yup.string().max(10, 'Limite da senha é 10 caracteres')
                 })}
                 onSubmit={handleLogin}>
                 {({ handleChange, handleSubmit, errors, touched, handleBlur }) => (
@@ -43,24 +61,26 @@ export function Login(props: any) {
 
 
                         <SafeAreaView>
-                            <TextInput placeholder="Digite seu email" onChangeText={handleChange('email')} style={styles.input} />
+                            <TextInput placeholder="Digite seu email" onChangeText={setEmail} style={styles.input} />
                             {errors.email && touched.email && <Text style={styles.stylefalha}>{errors.email}</Text>}
 
 
 
-                            <TextInput placeholder="Digite sua senha" onChangeText={handleChange('senha')} style={styles.input}
+                            <TextInput placeholder="Digite sua senha" onChangeText={setSenha} style={styles.input}
                                 secureTextEntry />
                             {errors.senha && touched.senha && <Text style={styles.stylefalha}>{errors.senha}</Text>}
                         </SafeAreaView>
-
+                        {erro != null && <Text style={styles.erro}>{erro}</Text>}
                         <TouchableOpacity style={styles.button1} onPress={() => handleSubmit()} >
                             <Text style={{ fontFamily: 'monospace', color: 'white' }}>Login</Text>
                         </TouchableOpacity>
-                        {resultado == 'falhou' && <Text style={styles.erro}>Email ou Senha incorretas!</Text>}
+
 
                         <TouchableOpacity style={styles.button2} onPress={() => nav.navigate('cadastro')}>
                             <Text style={{ fontFamily: 'monospace', color: 'white' }} >Cadastrar</Text>
                         </TouchableOpacity>
+
+
 
 
 
@@ -120,7 +140,7 @@ const styles = StyleSheet.create({
     },
     erro: {
         fontFamily: 'monospace',
-        color: 'black',
+        color: 'red',
         marginLeft: 20
     }
 

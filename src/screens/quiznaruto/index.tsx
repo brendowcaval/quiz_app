@@ -4,6 +4,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image, ScrollView } from "rea
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { NagevacaoType } from '../../navigations';
+import { getFirestore, doc, setDoc, updateDoc, addDoc, collection } from 'firebase/firestore';
 
 
 
@@ -13,6 +14,7 @@ import { NagevacaoType } from '../../navigations';
 export function QuizNaruto(props: any) {
 
     const nav = useNavigation<NativeStackNavigationProp<NagevacaoType, 'quizNaruto'>>();
+    const db = getFirestore();
 
 
     // - quiz terá 6 perguntas 
@@ -105,7 +107,14 @@ export function QuizNaruto(props: any) {
         setTimeout(() => {
 
 
-            nav.navigate('resultado', { pontos: pontuacao, tela: 'quizNaruto' });
+            addDoc(collection(db, props.route.params.email), {
+                pontos: pontuacao,
+                quiz: 'naruto',
+                data: new Date().toDateString()
+            })
+
+
+            nav.navigate('resultado', { email: props.route.params.email, pontos: pontuacao, tela: 'quizNaruto' });
 
         }, 3000)
     }

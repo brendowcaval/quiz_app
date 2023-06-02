@@ -8,9 +8,13 @@ que gosto para compor!)
 
 - ***Utilizando React Native com expo***
 
-ao todo são 7 telas do aplicativo, para logar, cadastrar, menu, as 3 telas dos quiz e uma
+ao todo são 8 telas do aplicativo, para logar, cadastrar, menu, as 3 telas dos quiz e uma
 tela que mostra o resultado do quiz, com os pontos que o usuário obteve e algumas opções
-como tentar novamente, e compartilhamento(aqui usei o recurso nativo de compartilhamento)
+como tentar novamente, e compartilhamento(aqui usei o recurso nativo de compartilhamento).
+E a tela de histórico de pontos, onde todas as pontuações do usuário são guardadas.
+
+
+***Foi configurado com o  Firebase(BaaS) ***
 
 
 
@@ -57,7 +61,9 @@ Telas:
 width="200" height="300">
 
 
-***link para o video mostrando o aplicativo:*** [Clique aqui](https://www.youtube.com/watch?v=vCPeSKyjA8c) <br />
+***link para o video mostrando o aplicativo(com o recurso nativo):*** [Clique aqui](https://www.youtube.com/watch?v=vCPeSKyjA8c) <br />
+***link para o video mostrando a versão final(foi incluida mais uma tela para histórico de pontos):***
+[Clique aqui](https://www.youtube.com/watch?v=ABcT-2i01Rs)
 ***as telas de login e cadastro foram implementadas com formik e validados pela Yup.***
  
 
